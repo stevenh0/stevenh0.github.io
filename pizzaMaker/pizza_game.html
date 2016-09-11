@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizza Game</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script>
+	$(document).ready(function(){
+ 	$.each($(".ingredient-rows"), function(i, val){
+ 		setTimeout(function(){$(val).fadeIn();}, i * 2000);
+ 	});
+
+ 	setFade();
+
+	var myTimer = setInterval(function(){incTimer()}, 1000);
+	function incTimer(){
+			$(".timer").html(function(i, val) { 
+				if(parseInt(val) >= 10)
+					return "burnt";
+				if(parseInt(val)==val)
+					return +val+1;
+				else
+					return val;
+
+				});
+			$("#clock").html(function(i, val) { return val-1});
+
+
+
+			if($("#clock").html()==0)
+				stopTimer();
+			console.log("Timer incremented");
+	}
+
+	function setFade(){
+		$(".ingredient").click(function(){
+			$(this).css('visibility', 'hidden');
+			console.log("clicked");
+		});
+	}
+
+	
+
+	function stopTimer(){
+		clearInterval(myTimer);
+		$(".gameButton").hide();
+	}
+
+	});
+
+	</script>
+
+	<!-- Modules -->
+    <script src="js/app.js"></script>
+
+</head>
+
+<body>
+
+	<div class = "container-fluid" ng-app="PizzaGameApp" ng-controller="MainController">
+		<div class="row">
+			<h2 class = "text-center">Baking in progress...</h2>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<h3 class="text-center col-md-8">Time remaining: </h3><h3 class="text-center col-md-4" id = "clock">120</h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="text-center col-md-8">Score: </h3><h3 class="text-center col-md-4" id = "scoreBox">0</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-3 text-center" style="height:300px;overflow:auto">
+				<p>
+					Baking List
+				<p>
+				<div class = "row" ng-repeat="b in baked track by $index" id = "pizza{{$index}}">
+					<p title={{b.ingredients}} class = "col-md-6">Pizza is baking</p>
+					<p class = "timer col-md-3" id = "pizzaTimer{{$index}}" ng-bind="b.bakeTime"></p>
+					<button class = "col-md-3 gameButton" ng-click="removePizza($index)">Remove pizza</button>
+				</div>
+			</div>
+
+			<div class="col-md-6 text-center" style="height:300px;overflow:auto" id="ingredientsBox">
+
+				Ingredients
+				<div class = "row gameButton ingredient-rows" ng-repeat="parts in part" hidden = "true">
+					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3)">
+						{{parts[0]}}
+					</div>
+					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3+1)">
+						{{parts[1]}}
+					</div>
+					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3+2)">
+						{{parts[2]}}
+					</div>
+				</div>
+
+			</div>
+
+
+			<div class="col-md-3 text-center" style = "height:300px;overflow:auto" id = "log">
+				<p>
+					Log
+				</p>
+			</div>
+		</div>
+
+		<div class = "row">
+			<div class = "col-md-3"></div>
+			<div class = "col-md-6">
+				<div class = "col-md-8 text-center gameButton" ng-click="bakePizza()"> Bake </div>
+			</div>
+			<div class = "col-md-3"> </div>
+		</div>
+		<div class = "row">
+			<div class = "col-md-9"></div>
+			<div class = "col-md-3 text-center">Restart</div>
+		</div>
+
+	</div>
+
+
+</body>
+
+
+
+</html>
