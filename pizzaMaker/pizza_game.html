@@ -7,11 +7,32 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script>
 	$(document).ready(function(){
- 	$.each($(".ingredient-rows"), function(i, val){
- 		setTimeout(function(){$(val).fadeIn();}, i * 2000);
+	var listTimers = [];
+ 	setRowAppearance();
+ 	setFade();
+ 	$("#bake-button").click(function(){
+ 		console.log("cleared timers");
+ 		clearTimers();
+ 		setRowAppearance();
+ 		setFade();
  	});
 
- 	setFade();
+	function setRowAppearance(){
+	 	$.each($(".ingredient-rows"), function(i, val){
+//	 		var time = $("#hidden-timer").html();
+	 		var timeout = setTimeout(function(){$(val).fadeIn();}, i * 2000);
+	 		listTimers.push(timeout);
+//	 		$("#hidden-timer").html(function(i, val){
+//	 			return +val+1;
+//	 		});
+	 	});
+ 	}
+
+ 	function clearTimers(){
+ 		for(var i=0; i < listTimers.length ; i ++){
+ 			clearTimeout(listTimers[i]);
+ 		}
+ 	}
 
 	var myTimer = setInterval(function(){incTimer()}, 1000);
 	function incTimer(){
@@ -48,6 +69,7 @@
 	}
 
 	});
+
 
 	</script>
 
@@ -86,7 +108,7 @@
 			<div class="col-md-6 text-center" style="height:300px;overflow:auto" id="ingredientsBox">
 
 				Ingredients
-				<div class = "row gameButton ingredient-rows" ng-repeat="parts in part">
+				<div class = "row gameButton ingredient-rows" ng-repeat="parts in part" hidden = "true">
 					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3)">
 						{{parts[0]}}
 					</div>
@@ -111,13 +133,13 @@
 		<div class = "row">
 			<div class = "col-md-3"></div>
 			<div class = "col-md-6">
-				<div class = "col-md-8 text-center gameButton" ng-click="bakePizza()"> Bake </div>
+				<div class = "col-md-8 text-center gameButton" ng-click="bakePizza()" id = "bake-button"> Bake </div>
 			</div>
 			<div class = "col-md-3"> </div>
 		</div>
 		<div class = "row">
-			<div class = "col-md-9"></div>
-			<div class = "col-md-3 text-center">Restart</div>
+			<div class = "col-md-9" id="hidden-timer">0</div>
+			<div class = "col-md-3 text-center"><a href = "pizza_game.html"> Restart </a> </div>
 		</div>
 
 	</div>

@@ -21,9 +21,8 @@ app.controller('MainController', ['$scope', function($scope) {
 		$scope.baked.push(curPizza);
 		$("#log").append("<div class='row'> Put a pizza in the oven </div>");
 		$scope.pizza = [];
-		console.log("pushed pizza");
-		$("#ingredientsBox").load("https://stevenh0.github.io/pizzaMaker/pizza_game.html .ingredient-rows");
-		console.log("pushed");
+		$scope.mix = shuffle($scope.mix);
+		$scope.part = partition($scope.mix);
 
 	}
 	$scope.removePizza=function(index){
