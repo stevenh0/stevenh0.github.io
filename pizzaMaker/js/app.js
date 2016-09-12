@@ -22,7 +22,8 @@ app.controller('MainController', ['$scope', function($scope) {
 		$("#log").append("<div class='row'> Put a pizza in the oven </div>");
 		$scope.pizza = [];
 		console.log("pushed pizza");
-		("#ingredientsBox").load("https://stevenh0.github.io/pizzaMaker/pizza_game.html ingredientsBox");
+		$("#ingredientsBox").load("https://stevenh0.github.io/pizzaMaker/pizza_game.html .ingredient-rows");
+		console.log("pushed");
 
 	}
 	$scope.removePizza=function(index){

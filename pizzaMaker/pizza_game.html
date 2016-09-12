@@ -86,7 +86,7 @@
 			<div class="col-md-6 text-center" style="height:300px;overflow:auto" id="ingredientsBox">
 
 				Ingredients
-				<div class = "row gameButton ingredient-rows" ng-repeat="parts in part" hidden = "true">
+				<div class = "row gameButton ingredient-rows" ng-repeat="parts in part">
 					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3)">
 						{{parts[0]}}
 					</div>
