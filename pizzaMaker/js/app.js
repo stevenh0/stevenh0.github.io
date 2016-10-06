@@ -29,8 +29,11 @@ app.controller('MainController', ['$scope', function($scope) {
 		var curPizza = $("#pizza"+index)
 		var bakeTime = $scope.baked[index].bakeTime = $("#pizzaTimer"+index).html();
 		$("#scoreBox").html(function(i,val){
-			return +parseInt(val)+parseInt($("#pizzaTimer"+index).html());
-		})
+			var timeBaked = $("#pizzaTimer"+index).html()
+			if(timeBaked=="burnt")
+				return parseInt(val)-10;
+			return +parseInt(val)+parseInt(timeBaked) * $("#pizza-value"+index).html();
+		});
 		curPizza.hide();
 
 	}
@@ -47,6 +50,9 @@ app.filter("ScorePizza", function(){
 	var veggie = false;
 	var cheese = false;
 	var score = 0;
+		if(pizza.length > 5)
+			return 0;
+
 		for (var i = 0; i < pizza.length; i++) {
 			if(meats.includes(pizza[i])){				
 				score = score + 3;

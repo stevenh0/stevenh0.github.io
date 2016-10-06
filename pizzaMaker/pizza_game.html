@@ -10,6 +10,10 @@
 	var listTimers = [];
  	setRowAppearance();
  	setFade();
+ 	$("#instructions-button").click(function(){
+ 		$("#instructions").toggle();
+ 	});
+
  	$("#bake-button").click(function(){
  		console.log("cleared timers");
  		clearTimers();
@@ -19,12 +23,10 @@
 
 	function setRowAppearance(){
 	 	$.each($(".ingredient-rows"), function(i, val){
-//	 		var time = $("#hidden-timer").html();
+
 	 		var timeout = setTimeout(function(){$(val).fadeIn();}, i * 2000);
 	 		listTimers.push(timeout);
-//	 		$("#hidden-timer").html(function(i, val){
-//	 			return +val+1;
-//	 		});
+
 	 	});
  	}
 
@@ -65,7 +67,7 @@
 
 	function stopTimer(){
 		clearInterval(myTimer);
-		$(".gameButton").hide();
+		$(".game-item").hide();
 	}
 
 	});
@@ -82,50 +84,60 @@
 
 	<div class = "container-fluid" ng-app="PizzaGameApp" ng-controller="MainController">
 		<div class="row">
-			<h2 class = "text-center">Baking in progress...</h2>
+			<h2 class = "text-center well">Baking in progress...</h2>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<h3 class="text-center col-md-8">Time remaining: </h3><h3 class="text-center col-md-4" id = "clock">120</h3>
+				<h3 class="text-center col-md-8 well">Time remaining: </h3><h3 class="text-center col-md-4 well" id = "clock">120</h3>
 			</div>
 			<div class="col-md-6">
-				<h3 class="text-center col-md-8">Score: </h3><h3 class="text-center col-md-4" id = "scoreBox">0</h3>
+				<h3 class="text-center col-md-8 well">Score: </h3><h3 class="text-center col-md-4 well" id = "scoreBox">0</h3>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-md-3 text-center" style="height:300px;overflow:auto">
+			<div class="col-md-3 text-center well" style="height:400px;overflow:auto">
 				<p>
-					Baking List
+					<h4>Baking List</h4>
 				<p>
 				<div class = "row" ng-repeat="b in baked track by $index" id = "pizza{{$index}}">
-					<p title={{b.ingredients}} class = "col-md-6">Pizza is baking</p>
-					<p class = "timer col-md-3" id = "pizzaTimer{{$index}}" ng-bind="b.bakeTime"></p>
-					<button class = "col-md-3 gameButton" ng-click="removePizza($index)">Remove pizza</button>
+					<div class = "col-md-9">
+						<div class = "row">
+							<div title={{b.ingredients}} class = "col-md-8">Pizza is baking</div>
+							<div class = "col-md-4 timer" id = "pizzaTimer{{$index}}" ng-bind="b.bakeTime"></div>
+						</div>
+						<div class = "row text-center">
+							<div class = "col-md-8"> Pizza value: </div>
+							<div class = "col-md-4" id = "pizza-value{{$index}}">{{b|ScorePizza}}</div>
+						</div>
+					</div>
+					<button type = "button" class = "col-md-3 game-item btn btn-default" ng-click="removePizza($index)">Remove pizza</button>
 				</div>
 			</div>
 
-			<div class="col-md-6 text-center" style="height:300px;overflow:auto" id="ingredientsBox">
+			<div class="col-md-6 text-center well" style="height:400px;overflow:auto" id="ingredientsBox">
 
-				Ingredients
-				<div class = "row gameButton ingredient-rows" ng-repeat="parts in part" hidden = "true">
-					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3)">
-						{{parts[0]}}
-					</div>
-					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3+1)">
-						{{parts[1]}}
-					</div>
-					<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3+2)">
-						{{parts[2]}}
-					</div>
+				<h4>Ingredients</h4>
+				<div class = "row game-item ingredient-rows table" ng-repeat="parts in part" hidden = "true">
+					<tr>
+						<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3)">
+							{{parts[0]}}
+						</div>
+						<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3+1)">
+							{{parts[1]}}
+						</div>
+						<div class = "col-md-4 ingredient" ng-click="addIngredient($index*3+2)">
+							{{parts[2]}}
+						</div>
+					</tr>
 				</div>
 
 			</div>
 
 
-			<div class="col-md-3 text-center" style = "height:300px;overflow:auto" id = "log">
+			<div class="col-md-3 text-center well" style = "height:400px;overflow:auto" id = "log">
 				<p>
-					Log
+					<h4>Log</h4>
 				</p>
 			</div>
 		</div>
@@ -133,13 +145,40 @@
 		<div class = "row">
 			<div class = "col-md-3"></div>
 			<div class = "col-md-6">
-				<div class = "col-md-8 text-center gameButton" ng-click="bakePizza()" id = "bake-button"> Bake </div>
+				<div class = "col-md-4"></div>
+				<div class = "col-md-4 text-center game-item btn btn-default" ng-click="bakePizza()" id = "bake-button"> Bake </div>
+				<div class = "col-md-4"></div>
 			</div>
-			<div class = "col-md-3"> </div>
+			<div class = "col-md-3 text-center btn btn-default"><a href = "pizza_game.html"> Restart </a> </div>
 		</div>
+
 		<div class = "row">
-			<div class = "col-md-9" id="hidden-timer">0</div>
-			<div class = "col-md-3 text-center"><a href = "pizza_game.html"> Restart </a> </div>
+			<div class = "col-md-3 text-center">
+				<h3>Instructions</h3>
+				<div id="instructions">
+					<p>Bake as many pizzas as possible within the time limit!</p>
+					<P>You can have a maximum of 5 ingredients in any pizza</P>
+					<p>Pizzas that have meat, vegetables and cheese on them will get bonus points</p>
+					<p>The longer you leave a pizza in the oven, the more points you will get</p>
+					<p>If you leave a pizza in the oven for too long though, it will burn!</p>
+					<p>When you have a spare moment, knead some dough to make all future pizzas more delicious</p>
+				</div>
+				<button type="button" class="btn btn-default" id="instructions-button">Hide/Show</button>
+
+			</div>
+
+			<div class = "col-md-9 text-center">
+				<div class = "row" style="height:100px"></div>
+				<div class = "row">
+					<button type="button" class="btn btn-default" id="dough_button">Knead pizza dough</button>
+				</div>
+				<div class = "row" style="height:50px"></div>
+				<div class = "row">
+					<div class = "col-md-5"></div>
+						<div class = "col-md-2 well">Knead bonus</div>
+					<div class = "col-md-5"></div>
+				</div>
+			</div>
 		</div>
 
 	</div>
