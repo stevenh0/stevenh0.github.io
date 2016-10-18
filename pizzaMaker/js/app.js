@@ -6,6 +6,7 @@ var cheeses = ["chedder", "gouda", "mozza", "feta", "parmesan", "provalone"]
 app.controller('MainController', ['$scope', function($scope) {
 	$scope.pizza = [];
 	$scope.baked = [];
+	$scope.knead = 0;
 	$scope.mix = shuffle((meats.concat(veggies)).concat(cheeses));
 	$scope.part = partition($scope.mix);
 	$scope.addIngredient = function(index){
@@ -32,13 +33,19 @@ app.controller('MainController', ['$scope', function($scope) {
 			var timeBaked = $("#pizzaTimer"+index).html()
 			if(timeBaked=="burnt")
 				return parseInt(val)-10;
-			return +parseInt(val)+parseInt(timeBaked) * $("#pizza-value"+index).html();
+			else if($("#pizza-value"+index).html()==0)
+				return 0;
+			return +parseInt(val)+ (parseInt(timeBaked) * $("#pizza-value"+index).html()) + (3 * $("#knead-bonus").html());
 		});
 		curPizza.hide();
 
 	}
 	$scope.scorePizza=function(pizza){
 		return pizza.length;
+	}
+	$scope.increaseKnead = function(){
+		$scope.knead++;
+		console.log($scope.knead);
 	}
 
 }]);
@@ -75,6 +82,11 @@ app.filter("ScorePizza", function(){
 	}
 });
 
+app.filter("displayKnead", function(){
+	return function(score){
+		return Math.floor(score/10);
+	}
+});
 
 
 function partition(array){

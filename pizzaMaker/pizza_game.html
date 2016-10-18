@@ -15,7 +15,6 @@
  	});
 
  	$("#bake-button").click(function(){
- 		console.log("cleared timers");
  		clearTimers();
  		setRowAppearance();
  		setFade();
@@ -51,23 +50,24 @@
 
 
 
-			if($("#clock").html()==0)
-				stopTimer();
-			console.log("Timer incremented");
+			if($("#clock").html()<=0)
+				stopClock();
 	}
 
 	function setFade(){
 		$(".ingredient").click(function(){
 			$(this).css('visibility', 'hidden');
-			console.log("clicked");
 		});
 	}
 
 	
 
-	function stopTimer(){
+	function stopClock(){
 		clearInterval(myTimer);
+		clearTimers();
 		$(".game-item").hide();
+		$("#banner").html("Time's Up!");
+		$("#restart-button").addClass("btn-success").removeClass("btn-default");
 	}
 
 	});
@@ -84,7 +84,7 @@
 
 	<div class = "container-fluid" ng-app="PizzaGameApp" ng-controller="MainController">
 		<div class="row">
-			<h2 class = "text-center well">Baking in progress...</h2>
+			<h2 class = "text-center well" id="banner">Baking in progress...</h2>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
@@ -149,9 +149,8 @@
 				<div class = "col-md-4 text-center game-item btn btn-default" ng-click="bakePizza()" id = "bake-button"> Bake </div>
 				<div class = "col-md-4"></div>
 			</div>
-			<div class = "col-md-3 text-center btn btn-default"><a href = "pizza_game.html"> Restart </a> </div>
+			<a href = "pizza_game.html" class = "col-md-3 text-center btn btn-default" id="restart-button"> Restart </a>
 		</div>
-
 		<div class = "row">
 			<div class = "col-md-3 text-center">
 				<h3>Instructions</h3>
@@ -170,12 +169,12 @@
 			<div class = "col-md-9 text-center">
 				<div class = "row" style="height:100px"></div>
 				<div class = "row">
-					<button type="button" class="btn btn-default" id="dough_button">Knead pizza dough</button>
+					<button type="button" class="btn btn-default" id="dough_button"  ng-click = "increaseKnead()">Knead pizza dough</button>
 				</div>
 				<div class = "row" style="height:50px"></div>
 				<div class = "row">
 					<div class = "col-md-5"></div>
-						<div class = "col-md-2 well">Knead bonus</div>
+						<div class = "col-md-2 well">Knead bonus: <div id = "knead-bonus">{{knead | displayKnead}}</div></div>
 					<div class = "col-md-5"></div>
 				</div>
 			</div>
